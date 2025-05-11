@@ -446,19 +446,5 @@
     "is_active": false,
     "is_visible": true,
     "comment": null
-  },
-  {
-    "id": 66,
-    "question": "TestComment",
-    "is_active": false,
-    "is_visible": true,
-    "comment": "testetsttest"
-  },
-  {
-    "id": 67,
-    "question": "test test",
-    "is_active": true,
-    "is_visible": true,
-    "comment": "hmmmmmmmmmmmmmm"
   }
 ]
