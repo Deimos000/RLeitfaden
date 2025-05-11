@@ -1,0 +1,464 @@
+[
+  {
+    "id": 1,
+    "question": "Start",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 2,
+    "question": "Kinder",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 3,
+    "question": "Jugentliche",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 4,
+    "question": "Erwachsene",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 5,
+    "question": "Gr\u00fcnde f\u00fcrs Probetraining",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 6,
+    "question": "Auspowern ",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 7,
+    "question": "Fitness",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 8,
+    "question": "Spa\u00df/Hobby/Freunde finden",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 9,
+    "question": "Warum soll sich euer kind auspowern ? ",
+    "is_active": true,
+    "is_visible": false,
+    "comment": "Bitte nur der Kurs pr\u00e4sentieren, der am besten zum Bedarf passt !"
+  },
+  {
+    "id": 10,
+    "question": "wie wirkt sich das im Alltag aus ? ",
+    "is_active": true,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 11,
+    "question": "Wie f\u00fchlt ihr euch mit der aktuellem situation ?",
+    "is_active": true,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 12,
+    "question": "Warum soll euer Kind abnehmen ? / Ausdauer gewinnen ?",
+    "is_active": true,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 13,
+    "question": "Selbstverteidigung",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 14,
+    "question": "Selbstbewusstsein/Sch\u00fcchtern",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 15,
+    "question": "Mobbing",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 16,
+    "question": "Warum wollt ihr das euer Kind selbstbewusster wird. ",
+    "is_active": true,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 17,
+    "question": "Woran merkt ihr dass eurem Kind Selbstbewusstsein fehlt ?",
+    "is_active": true,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 18,
+    "question": "Wie f\u00fchlt ihr euch mit der aktuellen Situation ? ",
+    "is_active": true,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 19,
+    "question": "Warum wollt ihr dass euer Kind Selbstverteidigung lernt ? ",
+    "is_active": true,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 20,
+    "question": "Gibt es einen konkreten Vorfall, der euch zu uns gebracht hat ? ",
+    "is_active": true,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 21,
+    "question": "Wie f\u00fchlt ihr euch mit der aktuellen Situation ? ",
+    "is_active": true,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 22,
+    "question": "Wie wirkt sich das Mobbing auf euer Kind aus ? ",
+    "is_active": true,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 23,
+    "question": "Wie verh\u00e4lt sich das Kind, wenn es gemobbt wird ? ",
+    "is_active": true,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 24,
+    "question": "L\u00f6sungen f\u00fcr den Bedarf",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 26,
+    "question": "L\u00f6sungen f\u00fcr den Bedarf SB",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 27,
+    "question": "L\u00f6sungen f\u00fcr Mobbing ",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 28,
+    "question": "l\u00f6sungen f\u00fcr Auspowern: ",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 29,
+    "question": "L\u00f6sungen f\u00fcr Spa\u00df/Hobby/Freunde:",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 30,
+    "question": "L\u00f6sungen f\u00fcr Fitness:",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 31,
+    "question": "Erlernen von Techniken und st\u00e4ndiges wiederholen",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 32,
+    "question": "Randori als \u00dcbungsform zur Stresssimulation -> Realit\u00e4tsnah",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 33,
+    "question": "Trainieren mit verschiedenen Partnern sorgt f\u00fcr mehr Eindr\u00fccke und Rundumschulung durch verschiedene Altersklassen, Gewicht, Gr\u00f6\u00dfe",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 34,
+    "question": "Life Skills Konzept",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 35,
+    "question": "St\u00e4rkung durch G\u00fcrtelpr\u00fcfungen ( sich selbst etwas beweisen)",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 36,
+    "question": "Vorzeigen von Techniken vor einer Gruppe",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 37,
+    "question": "St\u00e4rkung durch G\u00fcrtelpr\u00fcfungen (sich selbst etwas beweisen) ",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 38,
+    "question": "Vorzeigen von Techniken vor der Gruppe",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 39,
+    "question": "Turnierteilnahmen: sich selbst beweisen ",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 40,
+    "question": "Pratzen und Sandsack Training als guter Ausgleich ",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 41,
+    "question": "Hohe Konzentration erforderlich wegen komplexer Techniken -> mental abschalten",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 42,
+    "question": "Koordinationsprogramm f\u00f6rdert Konzentrationsf\u00e4higkeit + Disziplin ",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 43,
+    "question": "Hoher Kalorien verbrauch vor allem beim KBF",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 44,
+    "question": "Ganzk\u00f6rpertraining",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 45,
+    "question": "Konditeil am Ende sorgt f\u00fcr mehr Ausdauer und abnehmen",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 46,
+    "question": "Camps/Lehrg\u00e4nge verst\u00e4rken Gruppengef\u00fchl",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 47,
+    "question": "Coole Menschen (hast du ja im kurs gesehen ;) ) ",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 48,
+    "question": "Durch Trainingspartner wechsel lernen sich alle kennen ",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 49,
+    "question": "Sommerfest/ Weinachtsfeier",
+    "is_active": false,
+    "is_visible": false,
+    "comment": null
+  },
+  {
+    "id": 50,
+    "question": "\u00dcberleitung zum Kursplan ",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 51,
+    "question": "\"Ihr habt ja bereits am Telefon erw\u00e4hnt, dass ihr ein bis zwei mal in der Woche Zeit habt, um zum Training zu kommen. lasst uns doch mal schauen, welche Tage f\u00fcr euch in Frage kommen. \"",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 52,
+    "question": "MARKIERUNG HINZUF\u00dcGEN::::::: Bitte nur den Kurs Pr\u00e4sentieren, der am besten zum Bedarf passt.",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 53,
+    "question": "Weiter",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 54,
+    "question": "Hat der Probesch\u00fcler verstanden wie ihn der Kurs dabei helfen kann sein Ziel zu erreichen ? ",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 55,
+    "question": "Nein",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 56,
+    "question": "Ja ! (Empfehlung Geben)",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 57,
+    "question": "Preissandwich: ",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 58,
+    "question": "Zusammenfassung:",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 59,
+    "question": "Zusammenfassung: (Warum sind sie heute hier ?)",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 60,
+    "question": "Empfehlung: (sprich jetzt deine experten Empfehlung aus)",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 61,
+    "question": "Nutzen: (Hervorheben dass sie damit ihr Ziel erreichen werden)",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 62,
+    "question": "Kontrollfrage: Wann wollen wir starten ?",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 63,
+    "question": "Reaktion ? ",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 64,
+    "question": "Wenn die Empfehlung nicht passt, gemeinsam passende modalit\u00e4t finden.",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 65,
+    "question": "Wenn die empfehlung passt -> Mitgliedschaft abschlie\u00dfen",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 66,
+    "question": "TestComment",
+    "is_active": false,
+    "is_visible": true,
+    "comment": "testetsttest"
+  },
+  {
+    "id": 67,
+    "question": "test test",
+    "is_active": true,
+    "is_visible": true,
+    "comment": "hmmmmmmmmmmmmmm"
+  }
+]

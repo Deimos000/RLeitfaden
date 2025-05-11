@@ -1,0 +1,274 @@
+/* DropdownMenu.css */
+
+/* Existing Styles */
+.dropdown-wrapper {
+  min-height: 100vh;
+  background-color: #E5D0AC;
+  display: flex;
+  justify-content: top; /* Consider changing to flex-start if you want content at the very top */
+  align-items: top;     /* Consider changing to flex-start */
+  padding: 5rem;
+  padding-top: 9rem;
+  flex-direction: column;
+}
+
+.dropdown-card {
+  margin-top: 1%;
+  background-color: #A31D1D;
+  color: white;
+  width: 95%;
+  height: 80%; /* This defines the card's height relative to its parent */
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  overflow-y: auto; /*  <-- ADD THIS LINE to enable vertical scrolling when content overflows */
+  /* You might also want to consider max-height if you want a fixed maximum size */
+  /* For example: max-height: 80vh; and remove height: 80%; if you prefer fixed max */
+}
+
+.dropdown-title {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Style for Blurred and Invisible Items AND default item background */
+.dropdown-item {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  transition: opacity 0.5s, filter 0.5s, background-color 0.3s; /* Added background-color transition */
+  background-color: #6D2323; /* Default background for items */
+  border-radius: 1rem;
+  padding: 10px;
+  margin: 1rem;
+  
+}
+
+.dropdown-item.blurred {
+  filter: blur(2px);
+  opacity: 0.6;
+}
+
+/* Styles for conditional background colors */
+.dropdown-item.dropdown-item-red {
+  background-color: red; /* Or a more specific shade like #B91C1C */
+  /* If text color needs adjustment for contrast: */
+  /* color: white; */
+}
+
+.dropdown-item.dropdown-item-green {
+  background-color: green; /* Or a more specific shade like #059669 */
+  /* If text color needs adjustment for contrast: */
+  /* color: white; */
+}
+
+
+.dropdown-button {
+  font-size: 2rem;
+  width: 100%;
+  text-align: left;
+  background: none; /* Important: keep this transparent so item background shows */
+  border: none;
+  color: white; /* Default text color, ensure it contrasts with new backgrounds */
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.dropdown-button span {
+  word-wrap: break-word;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  max-width: 100%; /* Ensure span does not overflow button */
+  text-align: left;
+  display: block;
+}
+
+
+/* Styles when the item becomes visible and clear */
+.visible {
+  opacity: 1;
+  filter: blur(0); /* Remove blur */
+}
+
+.dropdown-children {
+  border-left: 2px solid #ef4444;
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
+  opacity: 1;
+  max-height: 1000px; /* large enough for content */
+}
+
+.dropdown-children.collapsing {
+  opacity: 0;
+  max-height: 0;
+}
+
+/* Back & Close Button Styling */
+.back-button,
+.popup-close.custom-close {
+background-color: white;
+color: #991b1b;
+border: 2px solid #991b1b;
+border-radius: 8px;
+padding: 0.5rem 1rem;
+margin: 2rem;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Smooth transition */
+}
+
+.back-button:hover {
+transform: translateY(-5px); /* Moves the button up slightly on hover */
+opacity: 1; /* Ensure opacity stays at 1 on hover */
+}
+
+.popup-close.custom-close:hover {
+background-color: #991b1b;
+color: white;
+transform: translateY(-5px); /* Same hover effect for close button */
+opacity: 1; /* Ensure opacity stays at 1 */
+}
+
+
+.transition-container {
+position: relative;
+overflow: hidden;
+min-height: 200px; /* Adjust if needed */
+}
+
+.transition-slide {
+animation: slideFadeIn 0.5s ease;
+}
+
+@keyframes slideFadeIn {
+0% {
+  opacity: 0;
+  transform: translateY(20px);
+}
+100% {
+  opacity: 1;
+  transform: translateY(0);
+}
+}
+
+
+
+/* Example CSS — update your DropdownMenu.css */
+.popup-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: none; /* Remove dark overlay */
+  display: flex;
+  justify-content: center;
+  padding: 2rem; /* adds spacing from bottom */
+  z-index: 1000;
+  pointer-events: none; /* let clicks pass through if not on popup */
+}
+
+.popup-box.custom-popup {
+  background: var(--card-bg, #470101); /* matches main card background */
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 1rem;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 20px rgb(88, 2, 2);
+  animation: slideUp 0.5s ease;
+  pointer-events: auto; /* allow clicks on popup */
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+.menu-bar {
+  border-radius: 25px;
+  height: fit-content;
+  display: inline-flex;
+  flex-direction: row; /* Align items horizontally */
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  align-items: flex-start; /* Changed from center to flex-start to align with top of items */
+  padding: 10px;
+  margin: 20px;
+  position: fixed;
+  top: 0;
+  left: 50%; /* Centers the element horizontally */
+  transform: translateX(-50%); /* Adjusts the element to exactly be in the center */
+  z-index: 1;
+}
+
+
+.menu-bar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row; 
+}
+
+.menu-bar li {
+  color: white;
+  font-family: sans-serif;
+  font-weight: bold;
+  padding: 12px 16px;
+  margin: 4px 0; /* Reduced vertical margin slightly for horizontal layout */
+  position: relative;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.menu-bar li::before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  transition: 0.2s;
+  border-radius: 25px;
+}
+
+.menu-bar li:hover::before {
+  background: linear-gradient(to bottom, #e8edec, #d2d1d3);
+  box-shadow: 0px 3px 20px 0px black;
+  transform: scale(1.2);
+}
+
+.menu-bar li:hover {
+  color: black;
+}
+
+.menu-bar a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.bottompng {
+  width: 30rem;
+  height: auto;
+  position: relative;
+  left: 50%; /* Centers the image horizontally */
+  transform: translateX(-50%); /* Adjusts the image to exactly be in the center */
+  padding-bottom: 5rem;
+  padding-top: 10rem;
+}
