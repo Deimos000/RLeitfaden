@@ -139,13 +139,24 @@ export default function DropdownMenu() {
     const childrenIds = childrenMap[currentId] || [];
     const items = childrenIds.map((id) => nodeMap[id]).filter(Boolean);
 
+    // UPDATED SORTING LOGIC:
+    // Sort items based on their original 'is_visible' status and their original order.
+    // This ensures that clicking an item to reveal it does not change its position in the list.
     const sortedItems = [...items].sort((a, b) => {
-      const isAVisibleForRendering = a.is_visible || clickedVisibleMap[a.id];
-      const isBVisibleForRendering = b.is_visible || clickedVisibleMap[b.id];
-      if (!isAVisibleForRendering && isBVisibleForRendering) return -1;
-      if (isAVisibleForRendering && !isBVisibleForRendering) return 1;
-      return 0;
+      // Primary sort criterion: original 'is_visible' status.
+      // Items with is_visible: false (originally invisible) should come before is_visible: true.
+      if (a.is_visible !== b.is_visible) {
+        return a.is_visible ? 1 : -1; // If a.is_visible is true, it comes after b (if b.is_visible is false).
+      }
+
+      // Secondary sort criterion: original order from childrenIds.
+      // This applies if both items have the same original 'is_visible' status.
+      // It preserves their relative order as defined in connections.json.
+      const indexA = childrenIds.indexOf(a.id);
+      const indexB = childrenIds.indexOf(b.id);
+      return indexA - indexB;
     });
+
     return sortedItems;
   };
 
