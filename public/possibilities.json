@@ -446,5 +446,19 @@
     "is_active": false,
     "is_visible": true,
     "comment": null
+  },
+  {
+    "id": 66,
+    "question": "Preis passt nicht",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 67,
+    "question": "Laufzeit passt nicht",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
   }
 ]
