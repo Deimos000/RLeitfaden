@@ -459,6 +459,20 @@
     "question": "Laufzeit passt nicht",
     "is_active": false,
     "is_visible": true,
+    "comment": "Achtung: Wochenpreise \u00e4ndern sich"
+  },
+  {
+    "id": 68,
+    "question": "Andere Laufzeiten Präsentieren",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 69,
+    "question": "Andere Laufzeiten Präsentieren",
+    "is_active": false,
+    "is_visible": true,
     "comment": null
   }
 ]
