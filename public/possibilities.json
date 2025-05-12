@@ -59,28 +59,28 @@
     "id": 9,
     "question": "Warum soll sich euer kind auspowern ? ",
     "is_active": true,
-    "is_visible": false,
+    "is_visible": true,
     "comment": "Bitte nur der Kurs pr\u00e4sentieren, der am besten zum Bedarf passt !"
   },
   {
     "id": 10,
     "question": "wie wirkt sich das im Alltag aus ? ",
     "is_active": true,
-    "is_visible": false,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 11,
     "question": "Wie f\u00fchlt ihr euch mit der aktuellem situation ?",
     "is_active": true,
-    "is_visible": false,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 12,
     "question": "Warum soll euer Kind abnehmen ? / Ausdauer gewinnen ?",
     "is_active": true,
-    "is_visible": false,
+    "is_visible": true,
     "comment": null
   },
   {
@@ -108,21 +108,21 @@
     "id": 16,
     "question": "Warum wollt ihr das euer Kind selbstbewusster wird. ",
     "is_active": true,
-    "is_visible": false,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 17,
     "question": "Woran merkt ihr dass eurem Kind Selbstbewusstsein fehlt ?",
     "is_active": true,
-    "is_visible": false,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 18,
     "question": "Wie f\u00fchlt ihr euch mit der aktuellen Situation ? ",
     "is_active": true,
-    "is_visible": false,
+    "is_visible": true,
     "comment": null
   },
   {
