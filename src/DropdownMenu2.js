@@ -100,21 +100,21 @@ export default function DropdownMenu() {
           rawConns: conns,
         });
 
-        if (poss.length > 0) {
-          const targetIds = new Set(conns.map(c => c.target_id));
-          const rootNode = poss.find(p => !targetIds.has(p.id));
-
-          if (rootNode) {
-            setPath([rootNode.id]);
-          } else if (poss.length > 0) {
-            console.warn("No distinct root node found. Falling back to the first possibility.");
-            setPath([poss[1].id]);
-          } else {
-            console.warn("Possibilities array is empty after fetching.");
-          }
-        } else {
-            console.warn("No possibilities data loaded from JSON.");
-        }
+        const startNode = poss.find(p => p.id === 1);
+if (startNode) {
+  setPath([startNode.id]);
+} else {
+  console.warn("Start node with id === 1 not found. Falling back to default logic.");
+  const targetIds = new Set(conns.map(c => c.target_id));
+  const rootNode = poss.find(p => !targetIds.has(p.id));
+  if (rootNode) {
+    setPath([rootNode.id]);
+  } else if (poss.length > 0) {
+    setPath([poss[0].id]); // use first item as fallback
+  } else {
+    console.warn("Possibilities array is empty after fetching.");
+  }
+}
 
       } catch (err) {
         console.error("Error fetching or processing data from JSON:", err);
