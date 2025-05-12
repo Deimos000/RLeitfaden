@@ -296,23 +296,7 @@ export default function DropdownMenu() {
             </button>
           )}
 
-          <button
-            className="debug-button"
-            onClick={() =>
-              setShowComment(JSON.stringify(debugData, null, 2))
-            }
-            style={{
-              marginBottom: "1rem",
-              padding: "0.5rem",
-              border: "1px solid white",
-              borderRadius: "0.5rem",
-              backgroundColor: "#1f2937",
-              color: "white",
-              cursor: "pointer",
-            }}
-          >
-            🐞 Show Fetched Data
-          </button>
+
 
           <div className="transition-container">
             <div className="transition-slide">
