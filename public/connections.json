@@ -485,20 +485,11 @@
     "target_id": 66
   },
   {
-    "id": 99,
-    "start_id": 66,
-    "target_id": 5
-  },
-  {
     "id": 100,
     "start_id": 1,
     "target_id": 67
   },
-  {
-    "id": 101,
-    "start_id": 67,
-    "target_id": 5
-  },
+
   {
     "id": 102,
     "start_id": 64,
