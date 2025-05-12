@@ -372,7 +372,7 @@
   },
   {
     "id": 55,
-    "question": "Nein",
+    "question": "Nein     (Zurück zur Bedarfsanalyse)",
     "is_active": false,
     "is_visible": true,
     "comment": null
