@@ -100,7 +100,7 @@ export default function DropdownMenu() {
           rawConns: conns,
         });
 
-        const startNode = poss.find(p => p.id === 1);
+        const startNode = poss.find(p => p.id === 2);
 if (startNode) {
   setPath([startNode.id]);
 } else {
