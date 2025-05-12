@@ -108,7 +108,7 @@ export default function DropdownMenu() {
             setPath([rootNode.id]);
           } else if (poss.length > 0) {
             console.warn("No distinct root node found. Falling back to the first possibility.");
-            setPath([poss[0].id]);
+            setPath([poss[1].id]);
           } else {
             console.warn("Possibilities array is empty after fetching.");
           }
