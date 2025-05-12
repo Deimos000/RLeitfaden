@@ -428,21 +428,21 @@
   },
   {
     "id": 63,
-    "question": "Reaktion ? ",
+    "question": "Weiter ",
     "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 64,
-    "question": "Wenn die Empfehlung nicht passt, gemeinsam passende modalit\u00e4t finden.",
+    "question": "Wenn die Empfehlung nicht passt, gemeinsam passende modalit\u00e4t finden. --- ",
     "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 65,
-    "question": "Wenn die empfehlung passt -> Mitgliedschaft abschlie\u00dfen",
+    "question": "Wenn die empfehlung passt -> Mitgliedschaft abschlie\u00dfen +++",
     "is_active": false,
     "is_visible": true,
     "comment": null
