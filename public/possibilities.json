@@ -129,21 +129,21 @@
     "id": 19,
     "question": "Warum wollt ihr dass euer Kind Selbstverteidigung lernt ? ",
     "is_active": true,
-    "is_visible": false,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 20,
     "question": "Gibt es einen konkreten Vorfall, der euch zu uns gebracht hat ? ",
     "is_active": true,
-    "is_visible": false,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 21,
     "question": "Wie f\u00fchlt ihr euch mit der aktuellen Situation ? ",
     "is_active": true,
-    "is_visible": false,
+    "is_visible": true,
     "comment": null
   },
   {
@@ -164,42 +164,42 @@
     "id": 24,
     "question": "L\u00f6sungen f\u00fcr den Bedarf",
     "is_active": false,
-    "is_visible": true,
+    "is_visible": false,
     "comment": null
   },
   {
     "id": 26,
     "question": "L\u00f6sungen f\u00fcr den Bedarf SB",
     "is_active": false,
-    "is_visible": true,
+    "is_visible": false,
     "comment": null
   },
   {
     "id": 27,
     "question": "L\u00f6sungen f\u00fcr Mobbing ",
     "is_active": false,
-    "is_visible": true,
+    "is_visible": false,
     "comment": null
   },
   {
     "id": 28,
     "question": "l\u00f6sungen f\u00fcr Auspowern: ",
     "is_active": false,
-    "is_visible": true,
+    "is_visible": false,
     "comment": null
   },
   {
     "id": 29,
     "question": "L\u00f6sungen f\u00fcr Spa\u00df/Hobby/Freunde:",
     "is_active": false,
-    "is_visible": true,
+    "is_visible": false,
     "comment": null
   },
   {
     "id": 30,
     "question": "L\u00f6sungen f\u00fcr Fitness:",
     "is_active": false,
-    "is_visible": true,
+    "is_visible": false,
     "comment": null
   },
   {
