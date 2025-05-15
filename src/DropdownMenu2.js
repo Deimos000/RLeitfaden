@@ -22,7 +22,8 @@ const CommentPopup = ({ message, onClose }) => (
   </div>
 );
 
-const getAutoRevealState = (currentLevelItems, clickedMap, activeMap) => {
+// Updated getAutoRevealState
+const getAutoRevealState = (currentLevelItems, activeMap) => {
   let autoRevealCandidateId = null;
   let shouldApplySpecialSorting = false;
 
@@ -30,27 +31,33 @@ const getAutoRevealState = (currentLevelItems, clickedMap, activeMap) => {
     return { autoRevealCandidateId, shouldApplySpecialSorting };
   }
 
-  const effectivelyInvisibleItems = currentLevelItems.filter(
-    (item) => item && !item.is_visible && !clickedMap[item.id]
+  // Find items that are *initially* invisible based on their properties (item.is_visible === false).
+  // This check does not consider whether an item has been clicked (clickedMap is not used here).
+  const initiallyInvisibleItems = currentLevelItems.filter(
+    (item) => item && !item.is_visible
   );
 
-  if (effectivelyInvisibleItems.length === 1) {
-    const candidate = effectivelyInvisibleItems[0];
+  // The special auto-reveal rule applies ONLY if there was *exactly one* initially invisible item.
+  if (initiallyInvisibleItems.length === 1) {
+    const candidate = initiallyInvisibleItems[0];
     const otherSiblings = currentLevelItems.filter(
       (item) => item && item.id !== candidate.id
     );
 
+    // Check if all other siblings that *require* activation are indeed activated.
     const allOtherSiblingsConditionsMet = otherSiblings.every((sib) => {
       if (!sib) return true;
+      // If a sibling is_active (requires a checkmark), it must be present in the activeMap.
       if (sib.is_active === true) {
         return !!activeMap[sib.id];
       }
+      // If a sibling does not require activation, it doesn't block.
       return true;
     });
 
     if (allOtherSiblingsConditionsMet) {
       autoRevealCandidateId = candidate.id;
-      shouldApplySpecialSorting = true;
+      shouldApplySpecialSorting = true; // This flag indicates the item should be visually distinct or sorted specially
     }
   }
   return { autoRevealCandidateId, shouldApplySpecialSorting };
@@ -67,8 +74,7 @@ export default function DropdownMenu() {
   const [debugData, setDebugData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [specialAutoRevealedItemId, setSpecialAutoRevealedItemId] = useState(null);
-  // NEW: State for bottom image opacity
-  const [bottomImageOpacity, setBottomImageOpacity] = useState(0.3); // Initial opacity
+  const [bottomImageOpacity, setBottomImageOpacity] = useState(0.3);
 
 
   useEffect(() => {
@@ -149,10 +155,12 @@ export default function DropdownMenu() {
   }, []);
 
   useEffect(() => {
+    // Reset specialAutoRevealedItemId when the path changes (i.e., new level loaded)
     setSpecialAutoRevealedItemId(null);
   }, [path]);
 
   useEffect(() => {
+    // This effect handles the initial auto-reveal logic for a level.
     if (isLoading || path.length === 0 || Object.keys(nodeMap).length === 0 || Object.keys(childrenMap).length === 0) {
       return;
     }
@@ -162,20 +170,25 @@ export default function DropdownMenu() {
     const currentChildrenIds = childrenMap[currentId] || [];
     const currentLevelItems = currentChildrenIds.map((id) => nodeMap[id]).filter(Boolean);
 
+    // getAutoRevealState now only depends on initial visibility and activeMap for sibling checks.
     const { autoRevealCandidateId, shouldApplySpecialSorting } = getAutoRevealState(
       currentLevelItems,
-      clickedVisibleMap,
       activatedMap
     );
 
     if (shouldApplySpecialSorting && autoRevealCandidateId) {
-      if (!clickedVisibleMap[autoRevealCandidateId]) {
+      // Only auto-reveal (mark as clicked) and set as special if it hasn't been clicked/revealed yet
+      // AND it's not already the special item for this level (prevents re-setting if effect re-runs).
+      if (!clickedVisibleMap[autoRevealCandidateId] && autoRevealCandidateId !== specialAutoRevealedItemId) {
         setClickedVisibleMap((prev) => ({ ...prev, [autoRevealCandidateId]: true }));
-      }
-      if (autoRevealCandidateId !== specialAutoRevealedItemId) {
         setSpecialAutoRevealedItemId(autoRevealCandidateId);
       }
     }
+    // Dependencies:
+    // - isLoading, path, nodeMap, childrenMap: Define the current level's items.
+    // - activatedMap: Checked by getAutoRevealState for sibling conditions.
+    // - clickedVisibleMap: Checked to prevent re-revealing an already clicked item.
+    // - specialAutoRevealedItemId: Checked to prevent re-setting if it's already the special item.
   }, [isLoading, path, nodeMap, childrenMap, clickedVisibleMap, activatedMap, specialAutoRevealedItemId]);
 
 
@@ -190,40 +203,29 @@ export default function DropdownMenu() {
     const childrenIds = childrenMap[currentId] || [];
     const items = childrenIds.map((id) => nodeMap[id]).filter(Boolean);
 
-    const effectivelyInvisibleItems = items.filter(
-      (item) => item && !item.is_visible && !clickedVisibleMap[item.id]
-    );
-    let singleInvisibleCandidateIdForSorting = null;
-    if (effectivelyInvisibleItems.length === 1) {
-      singleInvisibleCandidateIdForSorting = effectivelyInvisibleItems[0].id;
-    }
-
-    const effectiveSpecialId = specialAutoRevealedItemId || singleInvisibleCandidateIdForSorting;
-
+    // `specialAutoRevealedItemId` is the ID of the item (if any) that was
+    // auto-revealed at the start of this level because it was the sole initially invisible item.
     const sortedItems = [...items].sort((a, b) => {
       if (!a || !a.id) return 1;
       if (!b || !b.id) return -1;
 
-      const aIsSpecial = effectiveSpecialId && a.id === effectiveSpecialId;
-      const bIsSpecial = effectiveSpecialId && b.id === effectiveSpecialId;
+      const aIsTheSpecialAutoRevealedItem = specialAutoRevealedItemId && a.id === specialAutoRevealedItemId;
+      const bIsTheSpecialAutoRevealedItem = specialAutoRevealedItemId && b.id === specialAutoRevealedItemId;
 
-      if (aIsSpecial && !bIsSpecial) return 1;
-      if (!aIsSpecial && bIsSpecial) return -1;
-
-      const aIsInitiallyHidden = !a.is_visible;
-      const bIsInitiallyHidden = !b.is_visible;
-
-      if (aIsInitiallyHidden !== bIsInitiallyHidden) {
-        return aIsInitiallyHidden ? -1 : 1;
+      // If specialAutoRevealedItemId is set, the item with that ID goes to the bottom.
+      if (specialAutoRevealedItemId) {
+          if (aIsTheSpecialAutoRevealedItem && !bIsTheSpecialAutoRevealedItem) return 1; // 'a' (special) goes after 'b'
+          if (!aIsTheSpecialAutoRevealedItem && bIsTheSpecialAutoRevealedItem) return -1; // 'b' (special) goes after 'a'
       }
 
+      // For all other items, or if there's no special item, maintain the original order.
       const indexA = childrenIds.indexOf(a.id);
       const indexB = childrenIds.indexOf(b.id);
       return indexA - indexB;
     });
 
     return sortedItems;
-  }, [isLoading, path, nodeMap, childrenMap, clickedVisibleMap, activatedMap, specialAutoRevealedItemId]);
+  }, [isLoading, path, nodeMap, childrenMap, specialAutoRevealedItemId]); // Dependencies for sorting
 
 
   const handleActivate = (id, comment) => {
@@ -237,16 +239,18 @@ export default function DropdownMenu() {
         return;
     }
 
-    // NEW: Change opacity if item ID is 80
     if (item.id === 80) {
       setBottomImageOpacity(1);
     }
 
+    // If the item is not visible (based on its original prop) and hasn't been clicked yet,
+    // mark it as clicked to reveal it. Then return, as the primary action is revealing.
     if (!item.is_visible && !clickedVisibleMap[item.id]) {
       setClickedVisibleMap((prev) => ({ ...prev, [item.id]: true }));
-      return;
+      return; // Action done (reveal), no further processing for this click.
     }
 
+    // If item is not active (doesn't require a checkmark) but has a comment, show it.
     if (!item.is_active && item.comment) {
       setShowComment(item.comment);
     }
@@ -257,6 +261,8 @@ export default function DropdownMenu() {
     if (anySiblingRequiresActivation) {
         allRequiredSiblingsActivated = siblings.every((sibling) => {
             if (!sibling) return true;
+            // A sibling blocks progression if it's 'is_active' AND not yet in 'activatedMap'
+            // UNLESS it's the item currently being clicked.
             return !sibling.is_active || sibling.id === item.id || activatedMap[sibling.id];
         });
     }
@@ -268,12 +274,14 @@ export default function DropdownMenu() {
     } else {
       const hasChildren = childrenMap[item.id] && childrenMap[item.id].length > 0;
       if (hasChildren) {
+        // If item is active, activated, and has a comment, ensure comment is shown before navigating.
         if (item.is_active && activatedMap[item.id] && item.comment && showComment !== item.comment) {
           setShowComment(item.comment);
         }
         setPath([...path, item.id]);
-      } else {
+      } else { // Leaf node
         console.log("No further options available for this item (leaf node).");
+        // Show comment for leaf node if applicable (and not already shown)
         if (item.comment && (!item.is_active || (item.is_active && activatedMap[item.id])) && showComment !== item.comment) {
            setShowComment(item.comment);
         }
@@ -297,7 +305,6 @@ export default function DropdownMenu() {
             <h1 className="dropdown-title">Leitfaden</h1>
             <p>Loading data...</p>
           </div>
-          {/* MODIFIED: Added style for opacity */}
           <img src="/RandoriPro.png" alt="Top" className="bottompng" style={{ opacity: bottomImageOpacity }} />
         </div>
       </div>
@@ -319,7 +326,6 @@ export default function DropdownMenu() {
                         🐞 Show Debug Info
                     </button>
                 </div>
-                 {/* MODIFIED: Added style for opacity */}
                  <img src="/RandoriPro.png" alt="Top" className="bottompng" style={{ opacity: bottomImageOpacity }} />
                  {showComment && (
                     <CommentPopup
@@ -347,7 +353,6 @@ export default function DropdownMenu() {
                 🐞 Show Debug Info
             </button>
           </div>
-           {/* MODIFIED: Added style for opacity */}
           <img src="/RandoriPro.png" alt="Top" className="bottompng" style={{ opacity: bottomImageOpacity }} />
             {showComment && (
                 <CommentPopup
@@ -380,6 +385,8 @@ export default function DropdownMenu() {
                     console.warn("Rendering an invalid item:", item);
                     return null;
                 }
+                // An item is effectively visible if its original 'is_visible' prop is true,
+                // OR if it has been clicked (its ID is in clickedVisibleMap).
                 const isEffectivelyVisible = item.is_visible || clickedVisibleMap[item.id];
                 const processedLabel = item.label || '';
 
@@ -392,7 +399,6 @@ export default function DropdownMenu() {
                   itemSpecificClass = "dropdown-item-green";
                 }
 
-                // NEW: Logic for semicolon text marking
                 let labelContent;
                 if (processedLabel.includes(";")) {
                   const parts = processedLabel.split(";", 2);
@@ -418,7 +424,6 @@ export default function DropdownMenu() {
                       className="dropdown-button"
                       onClick={() => handleItemClick(item, currentItems)}
                     >
-                      {/* MODIFIED: Use labelContent for potentially styled text */}
                       <span>{labelContent}</span>
                       <div
                         style={{
@@ -460,7 +465,6 @@ export default function DropdownMenu() {
             </div>
           </div>
         </div>
-        {/* MODIFIED: Added style for opacity */}
         <img src="/RandoriPro.png" alt="Top" className="bottompng" style={{ opacity: bottomImageOpacity }}/>
 
         {showComment && (
