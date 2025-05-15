@@ -400,28 +400,28 @@
   },
   {
     "id": 59,
-    "question": "Zusammenfassung: (Warum sind sie heute hier ?)",
+    "question": "Zusammenfassung; (Warum sind sie heute hier ?)",
     "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 60,
-    "question": "Empfehlung: (sprich jetzt deine experten Empfehlung aus)",
+    "question": "Empfehlung; (sprich jetzt deine experten Empfehlung aus)",
     "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 61,
-    "question": "Nutzen: (Hervorheben dass sie damit ihr Ziel erreichen werden)",
+    "question": "Nutzen; (Hervorheben dass sie damit ihr Ziel erreichen werden)",
     "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 62,
-    "question": "Kontrollfrage: Wann wollen wir starten ?",
+    "question": "Kontrollfrage; Wann wollen wir starten ?",
     "is_active": false,
     "is_visible": true,
     "comment": null
