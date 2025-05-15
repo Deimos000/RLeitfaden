@@ -310,29 +310,29 @@
   {
     "id": 46,
     "question": "Camps/Lehrgänge verstärken Gruppengefühl",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 47,
     "question": "Coole Menschen (hast du ja im Kurs gesehen)",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 48,
     "question": "Durch Trainingspartnerwechsel lernen sich alle kennen",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 49,
     "question": "Sommerfest/Weihnachtsfeier",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
