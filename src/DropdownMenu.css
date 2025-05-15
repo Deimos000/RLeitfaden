@@ -184,6 +184,7 @@ animation: slideFadeIn 0.5s ease;
 .popup-box.custom-popup {
   background: var(--card-bg, #470101); /* matches main card background */
   color: white;
+  font-size: 3vh;
   padding: 1rem 1.5rem;
   border-radius: 1rem;
   max-width: 500px;
@@ -278,5 +279,6 @@ animation: slideFadeIn 0.5s ease;
   transform: translateX(-50%); /* Adjusts the image to exactly be in the center */
   padding-bottom: 5rem;
   padding-top: 10rem;
+  opacity:0 ;
 }
 
