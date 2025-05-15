@@ -150,14 +150,14 @@
     "id": 22,
     "question": "Wie wirkt sich das Mobbing auf euer Kind aus ? ",
     "is_active": true,
-    "is_visible": false,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 23,
     "question": "Wie verh\u00e4lt sich das Kind, wenn es gemobbt wird ? ",
     "is_active": true,
-    "is_visible": false,
+    "is_visible": true,
     "comment": null
   },
   {
@@ -205,64 +205,64 @@
   {
     "id": 31,
     "question": "Erlernen von Techniken und st\u00e4ndiges wiederholen",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 32,
     "question": "Randori als \u00dcbungsform zur Stresssimulation -> Realit\u00e4tsnah",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 33,
     "question": "Trainieren mit verschiedenen Partnern sorgt f\u00fcr mehr Eindr\u00fccke und Rundumschulung durch verschiedene Altersklassen, Gewicht, Gr\u00f6\u00dfe",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 34,
     "question": "Life Skills Konzept",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 35,
     "question": "St\u00e4rkung durch G\u00fcrtelpr\u00fcfungen ( sich selbst etwas beweisen)",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 36,
     "question": "Vorzeigen von Techniken vor einer Gruppe",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 37,
     "question": "St\u00e4rkung durch G\u00fcrtelpr\u00fcfungen (sich selbst etwas beweisen) ",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 38,
     "question": "Vorzeigen von Techniken vor der Gruppe",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
     "id": 39,
     "question": "Turnierteilnahmen: sich selbst beweisen ",
-    "is_active": false,
-    "is_visible": false,
+    "is_active": true,
+    "is_visible": true,
     "comment": null
   },
   {
