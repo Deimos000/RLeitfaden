@@ -563,32 +563,32 @@
   {
     "id": 116,
     "start_id": 53,
-    "target_id": 70   // Points to "a1: Zu teuer!"
+    "target_id": 70  
   },
   {
     "id": 117,
     "start_id": 53,
-    "target_id": 73   // Points to "b1: Nacht drüber schlafen!"
+    "target_id": 73   
   },
   {
     "id": 118,
     "start_id": 53,
-    "target_id": 76   // Points to "c1: Mit Partner sprechen (Ex-Partner)!"
+    "target_id": 76   
   },
   {
     "id": 119,
     "start_id": 53,
-    "target_id": 79   // Points to "d1: Fehlendes Durchhaltevermögen (leisten)!"
+    "target_id": 79   
   },
   {
     "id": 120,
     "start_id": 53,
-    "target_id": 81   // Points to "e1: (Kann ich mir nicht leisten)"
+    "target_id": 81  
   },
   {
     "id": 121,
     "start_id": 53,
-    "target_id": 83   // Points to "f1: Anderer Krieg, ich will das Training billiger."
+    "target_id": 83   
   }
 ]
 
