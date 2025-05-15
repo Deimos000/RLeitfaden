@@ -579,6 +579,13 @@
     "is_active": true,
     "is_visible": true,
     "comment": null
+  },
+    {
+    "id": 85,
+    "question": "Einwände",
+    "is_active": true,
+    "is_visible": true,
+    "comment": null
   }
 ]
 
