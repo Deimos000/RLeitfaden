@@ -279,8 +279,3 @@ animation: slideFadeIn 0.5s ease;
   padding-top: 10rem;
 }
 
-
-
-.dropdown-item.dropdown-item-yellow .dropdown-button:hover {
-  background-color: #FFF9C4; /* A slightly brighter yellow for hover */
-}
