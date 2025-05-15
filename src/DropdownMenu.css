@@ -64,6 +64,7 @@
 
 .dropdown-item.dropdown-item-yellow{
   background-color: yellow; /* Or a more specific shade like #059669 */
+  color: black;
   /* If text color needs adjustment for contrast: */
   /* color: white; */
 }
