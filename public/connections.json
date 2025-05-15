@@ -115,11 +115,6 @@
     "target_id": 18
   },
   {
-    "id": 24,
-    "start_id": 13,
-    "target_id": 24
-  },
-  {
     "id": 26,
     "start_id": 14,
     "target_id": 26
@@ -589,6 +584,11 @@
     "id": 121,
     "start_id": 85,
     "target_id": 83
+  },
+    {
+    "id": 24,
+    "start_id": 13,
+    "target_id": 24
   }
 ]
 
