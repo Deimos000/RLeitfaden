@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react"; // Added useCallback
+import React, { useEffect, useState, useCallback } from "react";
 import { Check } from "lucide-react";
 import "./DropdownMenu.css";
 
@@ -22,8 +22,6 @@ const CommentPopup = ({ message, onClose }) => (
   </div>
 );
 
-// Placed outside to ensure it's not recreated on every render unnecessarily
-// and to make its dependencies clear if it were memoized (though not strictly needed here as it's pure).
 const getAutoRevealState = (currentLevelItems, clickedMap, activeMap) => {
   let autoRevealCandidateId = null;
   let shouldApplySpecialSorting = false;
@@ -44,10 +42,10 @@ const getAutoRevealState = (currentLevelItems, clickedMap, activeMap) => {
 
     const allOtherSiblingsConditionsMet = otherSiblings.every((sib) => {
       if (!sib) return true;
-      if (sib.is_active === true) { // If this sibling IS activatable
-        return !!activeMap[sib.id]; // Then it MUST be activated
+      if (sib.is_active === true) {
+        return !!activeMap[sib.id];
       }
-      return true; // Otherwise (not activatable), it doesn't block.
+      return true;
     });
 
     if (allOtherSiblingsConditionsMet) {
@@ -69,6 +67,8 @@ export default function DropdownMenu() {
   const [debugData, setDebugData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [specialAutoRevealedItemId, setSpecialAutoRevealedItemId] = useState(null);
+  // NEW: State for bottom image opacity
+  const [bottomImageOpacity, setBottomImageOpacity] = useState(0.3); // Initial opacity
 
 
   useEffect(() => {
@@ -132,7 +132,7 @@ export default function DropdownMenu() {
           if (rootNode) {
             setPath([rootNode.id]);
           } else if (poss.length > 0) {
-            setPath([poss[0].id]); 
+            setPath([poss[0].id]);
           } else {
             console.warn("Possibilities array is empty after fetching.");
           }
@@ -148,12 +148,10 @@ export default function DropdownMenu() {
     fetchDataFromJson();
   }, []);
 
-  // Reset special auto-revealed item when navigating
   useEffect(() => {
     setSpecialAutoRevealedItemId(null);
   }, [path]);
 
-  // Effect for triggering auto-reveal action and setting the special item ID
   useEffect(() => {
     if (isLoading || path.length === 0 || Object.keys(nodeMap).length === 0 || Object.keys(childrenMap).length === 0) {
       return;
@@ -174,15 +172,12 @@ export default function DropdownMenu() {
       if (!clickedVisibleMap[autoRevealCandidateId]) {
         setClickedVisibleMap((prev) => ({ ...prev, [autoRevealCandidateId]: true }));
       }
-      // Set this item as special for the current level, if not already set
       if (autoRevealCandidateId !== specialAutoRevealedItemId) {
         setSpecialAutoRevealedItemId(autoRevealCandidateId);
       }
     }
   }, [isLoading, path, nodeMap, childrenMap, clickedVisibleMap, activatedMap, specialAutoRevealedItemId]);
 
-
- // ... inside the DropdownMenu component ...
 
   const getCurrentItems = useCallback(() => {
     if (isLoading || path.length === 0 || Object.keys(nodeMap).length === 0) {
@@ -215,19 +210,13 @@ export default function DropdownMenu() {
       if (aIsSpecial && !bIsSpecial) return 1;
       if (!aIsSpecial && bIsSpecial) return -1;
 
-      // MODIFIED RULE 2:
-      // Items are primarily sorted based on their initial `is_visible` status.
-      // Those with `is_visible: false` come before those with `is_visible: true`.
-      // This classification is static and not affected by `clickedVisibleMap`.
-      // This prevents items from changing their sort group merely by being clicked.
       const aIsInitiallyHidden = !a.is_visible;
       const bIsInitiallyHidden = !b.is_visible;
 
       if (aIsInitiallyHidden !== bIsInitiallyHidden) {
-        return aIsInitiallyHidden ? -1 : 1; // Items with is_visible: false come first.
+        return aIsInitiallyHidden ? -1 : 1;
       }
 
-      // Rule 3: Fallback to original order from connections.json.
       const indexA = childrenIds.indexOf(a.id);
       const indexB = childrenIds.indexOf(b.id);
       return indexA - indexB;
@@ -236,7 +225,6 @@ export default function DropdownMenu() {
     return sortedItems;
   }, [isLoading, path, nodeMap, childrenMap, clickedVisibleMap, activatedMap, specialAutoRevealedItemId]);
 
-// ... rest of the component ...
 
   const handleActivate = (id, comment) => {
     setActivatedMap((prev) => ({ ...prev, [id]: true }));
@@ -248,14 +236,17 @@ export default function DropdownMenu() {
         console.error("handleItemClick received invalid item:", item);
         return;
     }
-    // If an item is not yet visible (truly hidden or blurred) and not clicked, the first click reveals it.
+
+    // NEW: Change opacity if item ID is 80
+    if (item.id === 80) {
+      setBottomImageOpacity(1);
+    }
+
     if (!item.is_visible && !clickedVisibleMap[item.id]) {
       setClickedVisibleMap((prev) => ({ ...prev, [item.id]: true }));
-      // The useEffect for auto-reveal will then re-evaluate if this click triggers an auto-reveal for another item.
       return;
     }
 
-    // If item is not activatable but has a comment, show comment.
     if (!item.is_active && item.comment) {
       setShowComment(item.comment);
     }
@@ -265,8 +256,7 @@ export default function DropdownMenu() {
 
     if (anySiblingRequiresActivation) {
         allRequiredSiblingsActivated = siblings.every((sibling) => {
-            if (!sibling) return true; 
-            // A sibling blocks progression if it IS activatable AND it's NOT the current item AND it's NOT activated.
+            if (!sibling) return true;
             return !sibling.is_active || sibling.id === item.id || activatedMap[sibling.id];
         });
     }
@@ -274,22 +264,16 @@ export default function DropdownMenu() {
     if (item.is_active && !activatedMap[item.id]) {
       alert("Please activate this item before going deeper.");
     } else if (anySiblingRequiresActivation && !allRequiredSiblingsActivated) {
-      // This condition means there's at least one *other* activatable sibling that isn't yet active.
       alert("Please activate all items on this level before proceeding.");
     } else {
-      // All conditions met to proceed or it's a leaf/non-activatable with comment
       const hasChildren = childrenMap[item.id] && childrenMap[item.id].length > 0;
       if (hasChildren) {
-        // If it's an activatable item that's been activated, and has a comment, show it before navigating.
         if (item.is_active && activatedMap[item.id] && item.comment && showComment !== item.comment) {
           setShowComment(item.comment);
         }
         setPath([...path, item.id]);
       } else {
-        // Leaf node behavior
         console.log("No further options available for this item (leaf node).");
-        // Show comment if it exists and meets conditions (not active, or active & activated)
-        // and not already showing this comment.
         if (item.comment && (!item.is_active || (item.is_active && activatedMap[item.id])) && showComment !== item.comment) {
            setShowComment(item.comment);
         }
@@ -303,7 +287,7 @@ export default function DropdownMenu() {
     }
   };
 
-  const currentItems = getCurrentItems(); 
+  const currentItems = getCurrentItems();
 
   if (isLoading) {
     return (
@@ -313,12 +297,13 @@ export default function DropdownMenu() {
             <h1 className="dropdown-title">Leitfaden</h1>
             <p>Loading data...</p>
           </div>
-          <img src="/RandoriPro.png" alt="Top" className="bottompng" />
+          {/* MODIFIED: Added style for opacity */}
+          <img src="/RandoriPro.png" alt="Top" className="bottompng" style={{ opacity: bottomImageOpacity }} />
         </div>
       </div>
     );
   }
-  
+
   if (path.length === 0 && !isLoading && Object.keys(nodeMap).length === 0) {
     return (
         <div className="outer-wrapper">
@@ -334,7 +319,8 @@ export default function DropdownMenu() {
                         🐞 Show Debug Info
                     </button>
                 </div>
-                 <img src="/RandoriPro.png" alt="Top" className="bottompng" />
+                 {/* MODIFIED: Added style for opacity */}
+                 <img src="/RandoriPro.png" alt="Top" className="bottompng" style={{ opacity: bottomImageOpacity }} />
                  {showComment && (
                     <CommentPopup
                     message={showComment}
@@ -361,7 +347,8 @@ export default function DropdownMenu() {
                 🐞 Show Debug Info
             </button>
           </div>
-          <img src="/RandoriPro.png" alt="Top" className="bottompng" />
+           {/* MODIFIED: Added style for opacity */}
+          <img src="/RandoriPro.png" alt="Top" className="bottompng" style={{ opacity: bottomImageOpacity }} />
             {showComment && (
                 <CommentPopup
                 message={showComment}
@@ -393,12 +380,10 @@ export default function DropdownMenu() {
                     console.warn("Rendering an invalid item:", item);
                     return null;
                 }
-                // An item is visible if it's originally visible OR it has been clicked/auto-revealed
                 const isEffectivelyVisible = item.is_visible || clickedVisibleMap[item.id];
-                const processedLabel = item.label || ''; 
+                const processedLabel = item.label || '';
 
                 let itemSpecificClass = "";
-                // Yellow marking for "///"
                 if (processedLabel.includes("///")) {
                   itemSpecificClass = "dropdown-item-yellow";
                 } else if (processedLabel.includes("---") || processedLabel.toLowerCase().includes("nein")) {
@@ -407,10 +392,25 @@ export default function DropdownMenu() {
                   itemSpecificClass = "dropdown-item-green";
                 }
 
+                // NEW: Logic for semicolon text marking
+                let labelContent;
+                if (processedLabel.includes(";")) {
+                  const parts = processedLabel.split(";", 2);
+                  const beforeSemicolon = parts[0];
+                  const afterSemicolon = parts.length > 1 ? parts[1] : "";
+                  labelContent = (
+                    <>
+                      <span style={{ color: "aqua" }}>{beforeSemicolon}</span>
+                      {`;${afterSemicolon}`}
+                    </>
+                  );
+                } else {
+                  labelContent = processedLabel;
+                }
+
                 return (
                   <div
                     key={item.id}
-                    // Item is blurred if it's NOT effectively visible
                     className={`dropdown-item ${isEffectivelyVisible ? "" : "blurred"} ${itemSpecificClass}`}
                     title={!isEffectivelyVisible ? "Click to reveal" : ""}
                   >
@@ -418,7 +418,8 @@ export default function DropdownMenu() {
                       className="dropdown-button"
                       onClick={() => handleItemClick(item, currentItems)}
                     >
-                      <span>{processedLabel}</span>
+                      {/* MODIFIED: Use labelContent for potentially styled text */}
+                      <span>{labelContent}</span>
                       <div
                         style={{
                           display: "flex",
@@ -444,7 +445,7 @@ export default function DropdownMenu() {
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
-                              color: activatedMap[item.id] ? (itemSpecificClass === "dropdown-item-yellow" ? "#4E342E" : "#991b1b") : "white", // Adapting check color for yellow
+                              color: activatedMap[item.id] ? (itemSpecificClass === "dropdown-item-yellow" ? "#4E342E" : "#991b1b") : "white",
                               cursor: "pointer",
                             }}
                           >
@@ -459,7 +460,8 @@ export default function DropdownMenu() {
             </div>
           </div>
         </div>
-        <img src="/RandoriPro.png" alt="Top" className="bottompng" />
+        {/* MODIFIED: Added style for opacity */}
+        <img src="/RandoriPro.png" alt="Top" className="bottompng" style={{ opacity: bottomImageOpacity }}/>
 
         {showComment && (
           <CommentPopup
