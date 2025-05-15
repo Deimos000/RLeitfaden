@@ -79,7 +79,7 @@
   text-align: left;
   background: none; /* Important: keep this transparent so item background shows */
   border: none;
-  color: white; /* Default text color, ensure it contrasts with new backgrounds */
+  color: black; /* Default text color, ensure it contrasts with new backgrounds */
   padding: 0.5rem;
   border-radius: 0.5rem;
   display: flex;
