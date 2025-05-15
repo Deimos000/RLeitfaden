@@ -239,7 +239,7 @@ export default function DropdownMenu() {
         return;
     }
 
-    if (item.id === 5) {
+    if (item.id === 68) {
       setBottomImageOpacity(1);
     }
 
