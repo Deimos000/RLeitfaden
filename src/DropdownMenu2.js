@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react"; // Added useCallback
 import { Check } from "lucide-react";
 import "./DropdownMenu.css";
-// REMOVED: import { useReplacements } from "./ReplacementContext";
 
 const CommentPopup = ({ message, onClose }) => (
   <div className="popup-overlay">
@@ -23,39 +22,37 @@ const CommentPopup = ({ message, onClose }) => (
   </div>
 );
 
-// Helper function for the auto-reveal logic
-// This function is defined outside the component as it's pure and doesn't depend on component lifecycle/scope beyond its arguments.
+// Placed outside to ensure it's not recreated on every render unnecessarily
+// and to make its dependencies clear if it were memoized (though not strictly needed here as it's pure).
 const getAutoRevealState = (currentLevelItems, clickedMap, activeMap) => {
   let autoRevealCandidateId = null;
-  let shouldApplySpecialSorting = false; // Flag to indicate if the special sorting should apply
+  let shouldApplySpecialSorting = false;
 
-  // Ensure currentLevelItems is an array and not empty before proceeding
   if (!Array.isArray(currentLevelItems) || currentLevelItems.length === 0) {
     return { autoRevealCandidateId, shouldApplySpecialSorting };
   }
 
   const effectivelyInvisibleItems = currentLevelItems.filter(
-    (item) => item && !item.is_visible && !clickedMap[item.id] // Added item check
+    (item) => item && !item.is_visible && !clickedMap[item.id]
   );
 
   if (effectivelyInvisibleItems.length === 1) {
     const candidate = effectivelyInvisibleItems[0];
     const otherSiblings = currentLevelItems.filter(
-      (item) => item && item.id !== candidate.id // Added item check
+      (item) => item && item.id !== candidate.id
     );
 
-    // Condition:
-    // 1. All other siblings must have `is_active: true`.
-    // 2. All other siblings (which are `is_active: true`) must be activated (in `activeMap`).
-    // If there are no other siblings, this condition is vacuously true, meaning a single
-    // invisible item will auto-reveal if it's the only child.
-    const allOtherSiblingsConditionsMet = otherSiblings.every(
-      (sib) => sib.is_active && activeMap[sib.id]
-    );
+    const allOtherSiblingsConditionsMet = otherSiblings.every((sib) => {
+      if (!sib) return true; // Should be filtered by .filter(Boolean) earlier
+      if (sib.is_active === true) { // If this sibling IS activatable
+        return !!activeMap[sib.id]; // Then it MUST be activated
+      }
+      return true; // Otherwise (not activatable), it doesn't block.
+    });
 
     if (allOtherSiblingsConditionsMet) {
       autoRevealCandidateId = candidate.id;
-      shouldApplySpecialSorting = true; // Signal that sorting should be affected
+      shouldApplySpecialSorting = true;
     }
   }
   return { autoRevealCandidateId, shouldApplySpecialSorting };
@@ -71,6 +68,8 @@ export default function DropdownMenu() {
   const [showComment, setShowComment] = useState(null);
   const [debugData, setDebugData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [specialAutoRevealedItemId, setSpecialAutoRevealedItemId] = useState(null);
+
 
   useEffect(() => {
     async function fetchDataFromJson() {
@@ -146,19 +145,22 @@ export default function DropdownMenu() {
         setIsLoading(false);
       }
     }
-
     fetchDataFromJson();
   }, []);
 
-  // useEffect for auto-revealing single invisible child when conditions are met
+  // Reset special auto-revealed item when navigating
+  useEffect(() => {
+    setSpecialAutoRevealedItemId(null);
+  }, [path]);
+
+  // Effect for triggering auto-reveal and setting the special item ID
   useEffect(() => {
     if (isLoading || path.length === 0 || Object.keys(nodeMap).length === 0 || Object.keys(childrenMap).length === 0) {
       return;
     }
     const currentId = path[path.length - 1];
-    if (!childrenMap[currentId]) {
-      return;
-    }
+    if (!childrenMap[currentId]) return;
+
     const currentChildrenIds = childrenMap[currentId] || [];
     const currentLevelItems = currentChildrenIds.map((id) => nodeMap[id]).filter(Boolean);
 
@@ -168,60 +170,67 @@ export default function DropdownMenu() {
       activatedMap
     );
 
-    if (shouldApplySpecialSorting && autoRevealCandidateId && !clickedVisibleMap[autoRevealCandidateId]) {
-      setClickedVisibleMap((prev) => ({ ...prev, [autoRevealCandidateId]: true }));
+    if (shouldApplySpecialSorting && autoRevealCandidateId) {
+      if (!clickedVisibleMap[autoRevealCandidateId]) {
+        setClickedVisibleMap((prev) => ({ ...prev, [autoRevealCandidateId]: true }));
+      }
+      // Set this item as special for the current level, if not already set
+      if (autoRevealCandidateId !== specialAutoRevealedItemId) {
+        setSpecialAutoRevealedItemId(autoRevealCandidateId);
+      }
     }
-  }, [isLoading, path, nodeMap, childrenMap, clickedVisibleMap, activatedMap]);
+  }, [isLoading, path, nodeMap, childrenMap, clickedVisibleMap, activatedMap, specialAutoRevealedItemId]);
 
 
-  const getCurrentItems = () => {
+  const getCurrentItems = useCallback(() => {
     if (isLoading || path.length === 0 || Object.keys(nodeMap).length === 0) {
       return [];
     }
     const currentId = path[path.length - 1];
     if (!childrenMap[currentId]) {
-        console.warn(`No children found for currentId: ${currentId}. This might be a leaf node or data issue.`);
-        return [];
+      return [];
     }
     const childrenIds = childrenMap[currentId] || [];
     const items = childrenIds.map((id) => nodeMap[id]).filter(Boolean);
 
-    // Determine if the special auto-reveal condition is currently met for sorting
+    // Determine if an item *should* be auto-revealed in this render pass
+    // This helps position it correctly immediately, avoiding a flash.
     const { 
-      autoRevealCandidateId: currentAutoRevealId, 
-      shouldApplySpecialSorting: currentShouldApplySpecialSorting 
+      autoRevealCandidateId: currentPassCandidateId, 
+      shouldApplySpecialSorting: currentPassShouldApply 
     } = getAutoRevealState(items, clickedVisibleMap, activatedMap);
 
+    // The item that should be treated as "special and last" for sorting purposes:
+    // Prioritize an already set specialAutoRevealedItemId for persistence,
+    // otherwise, use the candidate from the current pass if applicable.
+    const effectiveSpecialId = specialAutoRevealedItemId || (currentPassShouldApply ? currentPassCandidateId : null);
+
     const sortedItems = [...items].sort((a, b) => {
-      // Ensure a and b are valid items before accessing properties
-      if (!a || !a.id) return 1; // push null/undefined 'a' to the end
-      if (!b || !b.id) return -1; // push null/undefined 'b' to the end (keep 'a' before)
+      if (!a || !a.id) return 1;
+      if (!b || !b.id) return -1;
 
+      const aIsSpecial = effectiveSpecialId && a.id === effectiveSpecialId;
+      const bIsSpecial = effectiveSpecialId && b.id === effectiveSpecialId;
 
-      const isATheSpecialItem = currentShouldApplySpecialSorting && a.id === currentAutoRevealId;
-      const isBTheSpecialItem = currentShouldApplySpecialSorting && b.id === currentAutoRevealId;
+      if (aIsSpecial && !bIsSpecial) return 1; // Special 'a' goes after non-special 'b'
+      if (!aIsSpecial && bIsSpecial) return -1; // Special 'b' goes after non-special 'a'
 
-      if (isATheSpecialItem) return 1; // Special item 'a' goes to the end
-      if (isBTheSpecialItem) return -1; // Special item 'b' goes to the end (so 'a' comes before)
-
-      // Regular sorting for all other items:
-      // Items that are still effectively hidden (original is_visible:false AND not in clickedVisibleMap) come first.
+      // If both are special (not possible for single special) or neither are, use normal sort:
       const aIsEffectivelyHidden = !a.is_visible && !clickedVisibleMap[a.id];
       const bIsEffectivelyHidden = !b.is_visible && !clickedVisibleMap[b.id];
 
       if (aIsEffectivelyHidden !== bIsEffectivelyHidden) {
-        return aIsEffectivelyHidden ? -1 : 1; // Effectively hidden items come before effectively visible ones.
+        return aIsEffectivelyHidden ? -1 : 1; // Effectively hidden items come first
       }
 
-      // If both have the same effective hidden status (e.g., both hidden, or both visible),
-      // sort by their original order from connections.json.
       const indexA = childrenIds.indexOf(a.id);
       const indexB = childrenIds.indexOf(b.id);
-      return indexA - indexB;
+      return indexA - indexB; // Then sort by original order
     });
 
     return sortedItems;
-  };
+  }, [isLoading, path, nodeMap, childrenMap, clickedVisibleMap, activatedMap, specialAutoRevealedItemId]);
+
 
   const handleActivate = (id, comment) => {
     setActivatedMap((prev) => ({ ...prev, [id]: true }));
@@ -235,6 +244,7 @@ export default function DropdownMenu() {
     }
     if (!item.is_visible && !clickedVisibleMap[item.id]) {
       setClickedVisibleMap((prev) => ({ ...prev, [item.id]: true }));
+      // If this click makes it eligible for auto-reveal of another, the effect will handle it.
       return;
     }
 
@@ -247,7 +257,7 @@ export default function DropdownMenu() {
 
     if (anySiblingRequiresActivation) {
         allRequiredSiblingsActivated = siblings.every((sibling) => {
-            if (!sibling) return true; // Skip if sibling is undefined/null
+            if (!sibling) return true; 
             return !sibling.is_active || sibling.id === item.id || activatedMap[sibling.id];
         });
     }
@@ -278,8 +288,9 @@ export default function DropdownMenu() {
     }
   };
 
-  const currentItems = getCurrentItems();
+  const currentItems = getCurrentItems(); // getCurrentItems is now memoized with useCallback
 
+  // ... (Loading and error states remain the same) ...
   if (isLoading) {
     return (
       <div className="outer-wrapper">
@@ -348,6 +359,7 @@ export default function DropdownMenu() {
     );
   }
 
+
   return (
     <div className="outer-wrapper">
       <div className="dropdown-wrapper">
@@ -367,11 +379,12 @@ export default function DropdownMenu() {
                     console.warn("Rendering an invalid item:", item);
                     return null;
                 }
-                const isVisible = item.is_visible || clickedVisibleMap[item.id];
+                // An item is visible if it's originally visible OR it has been clicked/auto-revealed
+                const isEffectivelyVisible = item.is_visible || clickedVisibleMap[item.id];
                 const processedLabel = item.label || ''; 
 
                 let itemSpecificClass = "";
-                // UPDATED: Added yellow condition, checking it first.
+                // Yellow marking for "///"
                 if (processedLabel.includes("///")) {
                   itemSpecificClass = "dropdown-item-yellow";
                 } else if (processedLabel.includes("---") || processedLabel.toLowerCase().includes("nein")) {
@@ -383,8 +396,9 @@ export default function DropdownMenu() {
                 return (
                   <div
                     key={item.id}
-                    className={`dropdown-item ${isVisible ? "" : "blurred"} ${itemSpecificClass}`}
-                    title={!isVisible ? "Click to reveal" : ""}
+                    // Item is blurred if it's NOT effectively visible
+                    className={`dropdown-item ${isEffectivelyVisible ? "" : "blurred"} ${itemSpecificClass}`}
+                    title={!isEffectivelyVisible ? "Click to reveal" : ""}
                   >
                     <button
                       className="dropdown-button"
@@ -416,7 +430,7 @@ export default function DropdownMenu() {
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
-                              color: activatedMap[item.id] ? "#991b1b" : "white", // This color might need to adapt based on itemSpecificClass for better contrast
+                              color: activatedMap[item.id] ? (itemSpecificClass === "dropdown-item-yellow" ? "#4E342E" : "#991b1b") : "white", // Adapting check color for yellow
                               cursor: "pointer",
                             }}
                           >
