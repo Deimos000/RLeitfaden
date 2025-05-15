@@ -62,6 +62,12 @@
   /* color: white; */
 }
 
+.dropdown-item.dropdown-item-yellow
+  background-color: yellow; /* Or a more specific shade like #059669 */
+  /* If text color needs adjustment for contrast: */
+  /* color: white; */
+}
+
 
 .dropdown-button {
   font-size: 2rem;
@@ -273,11 +279,7 @@ animation: slideFadeIn 0.5s ease;
   padding-top: 10rem;
 }
 
-.dropdown-item.dropdown-item-yellow .dropdown-button {
-  background-color: #FFFDE7; /* A pale, warm yellow */
-  color: #4E342E; /* A dark brown for good contrast on yellow */
-  /* You might want to ensure border color also fits, e.g., border-color: #FFCA28; */
-}
+
 
 .dropdown-item.dropdown-item-yellow .dropdown-button:hover {
   background-color: #FFF9C4; /* A slightly brighter yellow for hover */
