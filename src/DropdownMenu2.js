@@ -74,7 +74,7 @@ export default function DropdownMenu() {
   const [debugData, setDebugData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [specialAutoRevealedItemId, setSpecialAutoRevealedItemId] = useState(null);
-  const [bottomImageOpacity, setBottomImageOpacity] = useState(0.3);
+  const [bottomImageOpacity, setBottomImageOpacity] = useState(0);
 
 
   useEffect(() => {
