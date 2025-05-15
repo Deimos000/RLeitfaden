@@ -23,6 +23,45 @@ const CommentPopup = ({ message, onClose }) => (
   </div>
 );
 
+// Helper function for the auto-reveal logic
+// This function is defined outside the component as it's pure and doesn't depend on component lifecycle/scope beyond its arguments.
+const getAutoRevealState = (currentLevelItems, clickedMap, activeMap) => {
+  let autoRevealCandidateId = null;
+  let shouldApplySpecialSorting = false; // Flag to indicate if the special sorting should apply
+
+  // Ensure currentLevelItems is an array and not empty before proceeding
+  if (!Array.isArray(currentLevelItems) || currentLevelItems.length === 0) {
+    return { autoRevealCandidateId, shouldApplySpecialSorting };
+  }
+
+  const effectivelyInvisibleItems = currentLevelItems.filter(
+    (item) => item && !item.is_visible && !clickedMap[item.id] // Added item check
+  );
+
+  if (effectivelyInvisibleItems.length === 1) {
+    const candidate = effectivelyInvisibleItems[0];
+    const otherSiblings = currentLevelItems.filter(
+      (item) => item && item.id !== candidate.id // Added item check
+    );
+
+    // Condition:
+    // 1. All other siblings must have `is_active: true`.
+    // 2. All other siblings (which are `is_active: true`) must be activated (in `activeMap`).
+    // If there are no other siblings, this condition is vacuously true, meaning a single
+    // invisible item will auto-reveal if it's the only child.
+    const allOtherSiblingsConditionsMet = otherSiblings.every(
+      (sib) => sib.is_active && activeMap[sib.id]
+    );
+
+    if (allOtherSiblingsConditionsMet) {
+      autoRevealCandidateId = candidate.id;
+      shouldApplySpecialSorting = true; // Signal that sorting should be affected
+    }
+  }
+  return { autoRevealCandidateId, shouldApplySpecialSorting };
+};
+
+
 export default function DropdownMenu() {
   const [nodeMap, setNodeMap] = useState({});
   const [childrenMap, setChildrenMap] = useState({});
@@ -32,22 +71,6 @@ export default function DropdownMenu() {
   const [showComment, setShowComment] = useState(null);
   const [debugData, setDebugData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  // REMOVED: const { replacements } = useReplacements();
-
-  // REMOVED: The replaceLabelText function
-  // const replaceLabelText = (text) => {
-  //   if (typeof text !== 'string') return '';
-  //   let updated = text;
-  //   Object.entries(replacements).forEach(([term, value]) => {
-  //     if (value.trim() !== "") {
-  //       const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  //       const pattern = new RegExp(`\\b${escapedTerm}\\b`, "gi");
-  //       updated = updated.replace(pattern, value);
-  //     }
-  //   });
-  //   return updated;
-  // };
 
   useEffect(() => {
     async function fetchDataFromJson() {
@@ -101,20 +124,20 @@ export default function DropdownMenu() {
         });
 
         const startNode = poss.find(p => p.id === 2);
-if (startNode) {
-  setPath([startNode.id]);
-} else {
-  console.warn("Start node with id === 1 not found. Falling back to default logic.");
-  const targetIds = new Set(conns.map(c => c.target_id));
-  const rootNode = poss.find(p => !targetIds.has(p.id));
-  if (rootNode) {
-    setPath([rootNode.id]);
-  } else if (poss.length > 0) {
-    setPath([poss[0].id]); // use first item as fallback
-  } else {
-    console.warn("Possibilities array is empty after fetching.");
-  }
-}
+        if (startNode) {
+          setPath([startNode.id]);
+        } else {
+          console.warn("Start node with id === 2 not found. Falling back to default logic.");
+          const targetIds = new Set(conns.map(c => c.target_id));
+          const rootNode = poss.find(p => !targetIds.has(p.id));
+          if (rootNode) {
+            setPath([rootNode.id]);
+          } else if (poss.length > 0) {
+            setPath([poss[0].id]); 
+          } else {
+            console.warn("Possibilities array is empty after fetching.");
+          }
+        }
 
       } catch (err) {
         console.error("Error fetching or processing data from JSON:", err);
@@ -126,6 +149,30 @@ if (startNode) {
 
     fetchDataFromJson();
   }, []);
+
+  // useEffect for auto-revealing single invisible child when conditions are met
+  useEffect(() => {
+    if (isLoading || path.length === 0 || Object.keys(nodeMap).length === 0 || Object.keys(childrenMap).length === 0) {
+      return;
+    }
+    const currentId = path[path.length - 1];
+    if (!childrenMap[currentId]) {
+      return;
+    }
+    const currentChildrenIds = childrenMap[currentId] || [];
+    const currentLevelItems = currentChildrenIds.map((id) => nodeMap[id]).filter(Boolean);
+
+    const { autoRevealCandidateId, shouldApplySpecialSorting } = getAutoRevealState(
+      currentLevelItems,
+      clickedVisibleMap,
+      activatedMap
+    );
+
+    if (shouldApplySpecialSorting && autoRevealCandidateId && !clickedVisibleMap[autoRevealCandidateId]) {
+      setClickedVisibleMap((prev) => ({ ...prev, [autoRevealCandidateId]: true }));
+    }
+  }, [isLoading, path, nodeMap, childrenMap, clickedVisibleMap, activatedMap]);
+
 
   const getCurrentItems = () => {
     if (isLoading || path.length === 0 || Object.keys(nodeMap).length === 0) {
@@ -139,19 +186,35 @@ if (startNode) {
     const childrenIds = childrenMap[currentId] || [];
     const items = childrenIds.map((id) => nodeMap[id]).filter(Boolean);
 
-    // UPDATED SORTING LOGIC:
-    // Sort items based on their original 'is_visible' status and their original order.
-    // This ensures that clicking an item to reveal it does not change its position in the list.
+    // Determine if the special auto-reveal condition is currently met for sorting
+    const { 
+      autoRevealCandidateId: currentAutoRevealId, 
+      shouldApplySpecialSorting: currentShouldApplySpecialSorting 
+    } = getAutoRevealState(items, clickedVisibleMap, activatedMap);
+
     const sortedItems = [...items].sort((a, b) => {
-      // Primary sort criterion: original 'is_visible' status.
-      // Items with is_visible: false (originally invisible) should come before is_visible: true.
-      if (a.is_visible !== b.is_visible) {
-        return a.is_visible ? 1 : -1; // If a.is_visible is true, it comes after b (if b.is_visible is false).
+      // Ensure a and b are valid items before accessing properties
+      if (!a || !a.id) return 1; // push null/undefined 'a' to the end
+      if (!b || !b.id) return -1; // push null/undefined 'b' to the end (keep 'a' before)
+
+
+      const isATheSpecialItem = currentShouldApplySpecialSorting && a.id === currentAutoRevealId;
+      const isBTheSpecialItem = currentShouldApplySpecialSorting && b.id === currentAutoRevealId;
+
+      if (isATheSpecialItem) return 1; // Special item 'a' goes to the end
+      if (isBTheSpecialItem) return -1; // Special item 'b' goes to the end (so 'a' comes before)
+
+      // Regular sorting for all other items:
+      // Items that are still effectively hidden (original is_visible:false AND not in clickedVisibleMap) come first.
+      const aIsEffectivelyHidden = !a.is_visible && !clickedVisibleMap[a.id];
+      const bIsEffectivelyHidden = !b.is_visible && !clickedVisibleMap[b.id];
+
+      if (aIsEffectivelyHidden !== bIsEffectivelyHidden) {
+        return aIsEffectivelyHidden ? -1 : 1; // Effectively hidden items come before effectively visible ones.
       }
 
-      // Secondary sort criterion: original order from childrenIds.
-      // This applies if both items have the same original 'is_visible' status.
-      // It preserves their relative order as defined in connections.json.
+      // If both have the same effective hidden status (e.g., both hidden, or both visible),
+      // sort by their original order from connections.json.
       const indexA = childrenIds.indexOf(a.id);
       const indexB = childrenIds.indexOf(b.id);
       return indexA - indexB;
@@ -179,11 +242,12 @@ if (startNode) {
       setShowComment(item.comment);
     }
 
-    const anySiblingRequiresActivation = siblings.some(sibling => sibling.is_active);
+    const anySiblingRequiresActivation = siblings.some(sibling => sibling && sibling.is_active);
     let allRequiredSiblingsActivated = true;
 
     if (anySiblingRequiresActivation) {
         allRequiredSiblingsActivated = siblings.every((sibling) => {
+            if (!sibling) return true; // Skip if sibling is undefined/null
             return !sibling.is_active || sibling.id === item.id || activatedMap[sibling.id];
         });
     }
@@ -296,8 +360,6 @@ if (startNode) {
             </button>
           )}
 
-
-
           <div className="transition-container">
             <div className="transition-slide">
               {currentItems.map((item) => {
@@ -306,12 +368,13 @@ if (startNode) {
                     return null;
                 }
                 const isVisible = item.is_visible || clickedVisibleMap[item.id];
-                // UPDATED: Use item.label directly
-                const processedLabel = item.label || ''; // Ensure processedLabel is a string
+                const processedLabel = item.label || ''; 
 
                 let itemSpecificClass = "";
-                // Logic now uses the raw item.label
-                if (processedLabel.includes("---") || processedLabel.toLowerCase().includes("nein")) {
+                // UPDATED: Added yellow condition, checking it first.
+                if (processedLabel.includes("///")) {
+                  itemSpecificClass = "dropdown-item-yellow";
+                } else if (processedLabel.includes("---") || processedLabel.toLowerCase().includes("nein")) {
                   itemSpecificClass = "dropdown-item-red";
                 } else if (processedLabel.includes(":::") || processedLabel.includes("+++") || processedLabel.toLowerCase().startsWith("ja ")) {
                   itemSpecificClass = "dropdown-item-green";
@@ -327,7 +390,6 @@ if (startNode) {
                       className="dropdown-button"
                       onClick={() => handleItemClick(item, currentItems)}
                     >
-                      {/* UPDATED: Display processedLabel (which is now item.label) */}
                       <span>{processedLabel}</span>
                       <div
                         style={{
@@ -354,7 +416,7 @@ if (startNode) {
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
-                              color: activatedMap[item.id] ? "#991b1b" : "white",
+                              color: activatedMap[item.id] ? "#991b1b" : "white", // This color might need to adapt based on itemSpecificClass for better contrast
                               cursor: "pointer",
                             }}
                           >
