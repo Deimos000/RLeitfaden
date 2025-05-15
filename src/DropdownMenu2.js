@@ -239,7 +239,7 @@ export default function DropdownMenu() {
         return;
     }
 
-    if (item.id === 80) {
+    if (item.id === 5) {
       setBottomImageOpacity(1);
     }
 
@@ -345,13 +345,6 @@ export default function DropdownMenu() {
           <div className="dropdown-card">
             <h1 className="dropdown-title">Leitfaden</h1>
             <p>Initializing or no root node found to start. Check console & debug data.</p>
-             <button
-                className="debug-button"
-                onClick={() => setShowComment(JSON.stringify(debugData, null, 2))}
-                style={{marginTop: "1rem"}}
-            >
-                🐞 Show Debug Info
-            </button>
           </div>
           <img src="/RandoriPro.png" alt="Top" className="bottompng" style={{ opacity: bottomImageOpacity }} />
             {showComment && (
