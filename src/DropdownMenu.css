@@ -14,7 +14,7 @@
 
 .dropdown-card {
   margin-top: 1%;
-  background-color: #A31D1D;
+  background-color: #6D2323;
   color: white;
   width: 95%;
   height: 80%; /* This defines the card's height relative to its parent */
@@ -37,7 +37,7 @@
   font-size: 3rem;
   margin-bottom: 0.5rem;
   transition: opacity 0.5s, filter 0.5s, background-color 0.3s; /* Added background-color transition */
-  background-color: #6D2323; /* Default background for items */
+  background-color: #A31D1D; /* Default background for items */
   border-radius: 1rem;
   padding: 10px;
   margin: 1rem;
