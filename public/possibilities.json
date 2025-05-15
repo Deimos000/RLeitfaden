@@ -162,42 +162,42 @@
   },
   {
     "id": 24,
-    "question": "L\u00f6sungen f\u00fcr den Bedarf",
+    "question": "L\u00f6sungen f\u00fcr den Bedarf: (Hier Klicken)",
     "is_active": false,
     "is_visible": false,
     "comment": null
   },
   {
     "id": 26,
-    "question": "L\u00f6sungen f\u00fcr den Bedarf SB",
+    "question": "L\u00f6sungen f\u00fcr den Bedarf SB: (Hier Klicken)",
     "is_active": false,
     "is_visible": false,
     "comment": null
   },
   {
     "id": 27,
-    "question": "L\u00f6sungen f\u00fcr Mobbing ",
+    "question": "L\u00f6sungen f\u00fcr Mobbing: (Hier Klicken) ",
     "is_active": false,
     "is_visible": false,
     "comment": null
   },
   {
     "id": 28,
-    "question": "l\u00f6sungen f\u00fcr Auspowern: ",
+    "question": "l\u00f6sungen f\u00fcr Auspowern: (Hier Klicken) ",
     "is_active": false,
     "is_visible": false,
     "comment": null
   },
   {
     "id": 29,
-    "question": "L\u00f6sungen f\u00fcr Spa\u00df/Hobby/Freunde:",
+    "question": "L\u00f6sungen f\u00fcr Spa\u00df/Hobby/Freunde: (Hier Klicken)",
     "is_active": false,
     "is_visible": false,
     "comment": null
   },
   {
     "id": 30,
-    "question": "L\u00f6sungen f\u00fcr Fitness:",
+    "question": "L\u00f6sungen f\u00fcr Fitness: (Hier Klicken)",
     "is_active": false,
     "is_visible": false,
     "comment": null
@@ -337,7 +337,7 @@
   },
   {
     "id": 50,
-    "question": "\u00dcberleitung zum Kursplan ",
+    "question": "\u00dcberleitung zum Kursplan  (Hier Klicken)",
     "is_active": false,
     "is_visible": true,
     "comment": null
@@ -428,7 +428,7 @@
   },
   {
     "id": 63,
-    "question": "Weiter ",
+    "question": " Reaktion Abwarten -> Weiter (Hier Klicken) ",
     "is_active": false,
     "is_visible": true,
     "comment": null
