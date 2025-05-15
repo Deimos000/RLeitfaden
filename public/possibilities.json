@@ -478,112 +478,112 @@
   {
     "id": 70,
     "question": "Zu teuer!",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 71,
     "question": "Oh, ich verstehe, der Preis ist euch zu hoch!",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 72,
     "question": "Willst du mir sagen, was genau du dir unter einer Nacht schlafen willst?",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 73,
     "question": "Nacht drüber schlafen!",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 74,
     "question": "Oh, ich verstehe, du möchtest noch einmal eine Nacht drüber schlafen.",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 75,
     "question": "Möchtest du mir sagen, was du mit deinem Partner besprechen möchtest? Vielleicht kann ich dir dazu nochmal ein paar Informationen geben, die dir helfen!?",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 76,
     "question": "Mit Partner sprechen (Ex-Partner)!",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 77,
     "question": "Oh, ich verstehe, du möchtest das Ganze mit deinem Partner besprechen.",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 78,
     "question": "Willst du mir verraten, warum du das denkst? Warum denkst du, dass wir hochpreisiger sind als andere Anbieter?",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 79,
     "question": "Fehlendes Durchhaltevermögen (leisten)!",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 80,
     "question": "Okay, ich verstehe, du bist dir nicht sicher, ob du es durchziehst.",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 81,
     "question": "(Kann ich mir nicht leisten)",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 82,
     "question": "(Okay, dass verstehe ich.)",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 83,
     "question": "Anderer Krieg, ich will das Training billiger.",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
   {
     "id": 84,
     "question": "Okay, ich verstehe, andere Sportschulen sind günstiger.",
-    "is_active": true,
+    "is_active": false,
     "is_visible": true,
     "comment": null
   },
     {
     "id": 85,
-    "question": "Einwände",
-    "is_active": true,
+    "question": "Einwände ///",
+    "is_active": false,
     "is_visible": true,
     "comment": null
   }
