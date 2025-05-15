@@ -182,6 +182,8 @@ export default function DropdownMenu() {
   }, [isLoading, path, nodeMap, childrenMap, clickedVisibleMap, activatedMap, specialAutoRevealedItemId]);
 
 
+ // ... inside the DropdownMenu component ...
+
   const getCurrentItems = useCallback(() => {
     if (isLoading || path.length === 0 || Object.keys(nodeMap).length === 0) {
       return [];
@@ -193,8 +195,6 @@ export default function DropdownMenu() {
     const childrenIds = childrenMap[currentId] || [];
     const items = childrenIds.map((id) => nodeMap[id]).filter(Boolean);
 
-    // Identify if there's a single item that is currently invisible and not clicked.
-    // This is purely for sorting purposes, to satisfy "only one invisible child should be rendered last".
     const effectivelyInvisibleItems = items.filter(
       (item) => item && !item.is_visible && !clickedVisibleMap[item.id]
     );
@@ -203,10 +203,6 @@ export default function DropdownMenu() {
       singleInvisibleCandidateIdForSorting = effectivelyInvisibleItems[0].id;
     }
 
-    // Determine the item that should be treated as "special and last" for sorting.
-    // Priority:
-    // 1. An item already marked as special for this level via auto-reveal (specialAutoRevealedItemId).
-    // 2. If none from (1), then the singleInvisibleCandidateIdForSorting (if any).
     const effectiveSpecialId = specialAutoRevealedItemId || singleInvisibleCandidateIdForSorting;
 
     const sortedItems = [...items].sort((a, b) => {
@@ -216,17 +212,19 @@ export default function DropdownMenu() {
       const aIsSpecial = effectiveSpecialId && a.id === effectiveSpecialId;
       const bIsSpecial = effectiveSpecialId && b.id === effectiveSpecialId;
 
-      // Rule 1: Special item goes to the end.
-      if (aIsSpecial && !bIsSpecial) return 1; // Special 'a' goes after non-special 'b'
-      if (!aIsSpecial && bIsSpecial) return -1; // Special 'b' goes after non-special 'a'
+      if (aIsSpecial && !bIsSpecial) return 1;
+      if (!aIsSpecial && bIsSpecial) return -1;
 
-      // Rule 2 (applies if neither or both are special - though both special won't happen here):
-      // Effectively hidden items (not clicked, not is_visible) come before effectively visible ones.
-      const aIsEffectivelyHidden = !a.is_visible && !clickedVisibleMap[a.id];
-      const bIsEffectivelyHidden = !b.is_visible && !clickedVisibleMap[b.id];
+      // MODIFIED RULE 2:
+      // Items are primarily sorted based on their initial `is_visible` status.
+      // Those with `is_visible: false` come before those with `is_visible: true`.
+      // This classification is static and not affected by `clickedVisibleMap`.
+      // This prevents items from changing their sort group merely by being clicked.
+      const aIsInitiallyHidden = !a.is_visible;
+      const bIsInitiallyHidden = !b.is_visible;
 
-      if (aIsEffectivelyHidden !== bIsEffectivelyHidden) {
-        return aIsEffectivelyHidden ? -1 : 1; // Effectively hidden items come first
+      if (aIsInitiallyHidden !== bIsInitiallyHidden) {
+        return aIsInitiallyHidden ? -1 : 1; // Items with is_visible: false come first.
       }
 
       // Rule 3: Fallback to original order from connections.json.
@@ -238,6 +236,7 @@ export default function DropdownMenu() {
     return sortedItems;
   }, [isLoading, path, nodeMap, childrenMap, clickedVisibleMap, activatedMap, specialAutoRevealedItemId]);
 
+// ... rest of the component ...
 
   const handleActivate = (id, comment) => {
     setActivatedMap((prev) => ({ ...prev, [id]: true }));
