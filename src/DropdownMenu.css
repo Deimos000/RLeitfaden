@@ -62,7 +62,7 @@
   /* color: white; */
 }
 
-.dropdown-item.dropdown-item-yellow
+.dropdown-item.dropdown-item-yellow{
   background-color: yellow; /* Or a more specific shade like #059669 */
   /* If text color needs adjustment for contrast: */
   /* color: white; */
