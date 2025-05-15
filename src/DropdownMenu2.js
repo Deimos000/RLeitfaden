@@ -203,22 +203,29 @@ export default function DropdownMenu() {
     const childrenIds = childrenMap[currentId] || [];
     const items = childrenIds.map((id) => nodeMap[id]).filter(Boolean);
 
-    // `specialAutoRevealedItemId` is the ID of the item (if any) that was
-    // auto-revealed at the start of this level because it was the sole initially invisible item.
     const sortedItems = [...items].sort((a, b) => {
-      if (!a || !a.id) return 1;
-      if (!b || !b.id) return -1;
+      if (!a || !a.id) return 1; // Invalid 'a' goes to the end
+      if (!b || !b.id) return -1; // Invalid 'b' goes to the end (so 'a' comes before it if 'a' is valid)
 
+      const aIsActive = a.is_active === true;
+      const bIsActive = b.is_active === true;
+
+      // Rule 1: Items with is_active=true come before items with is_active=false (or undefined)
+      if (aIsActive && !bIsActive) return -1; // a comes first
+      if (!aIsActive && bIsActive) return 1;  // b comes first
+
+      // If both have the same is_active status (both true or both false/undefined),
+      // then apply the specialAutoRevealedItemId logic.
       const aIsTheSpecialAutoRevealedItem = specialAutoRevealedItemId && a.id === specialAutoRevealedItemId;
       const bIsTheSpecialAutoRevealedItem = specialAutoRevealedItemId && b.id === specialAutoRevealedItemId;
 
-      // If specialAutoRevealedItemId is set, the item with that ID goes to the bottom.
+      // Rule 2: The special auto-revealed item goes to the bottom of its group (active or non-active).
       if (specialAutoRevealedItemId) {
           if (aIsTheSpecialAutoRevealedItem && !bIsTheSpecialAutoRevealedItem) return 1; // 'a' (special) goes after 'b'
           if (!aIsTheSpecialAutoRevealedItem && bIsTheSpecialAutoRevealedItem) return -1; // 'b' (special) goes after 'a'
       }
 
-      // For all other items, or if there's no special item, maintain the original order.
+      // Rule 3: For all other items within the same group, maintain the original order from childrenIds.
       const indexA = childrenIds.indexOf(a.id);
       const indexB = childrenIds.indexOf(b.id);
       return indexA - indexB;
