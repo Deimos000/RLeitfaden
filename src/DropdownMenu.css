@@ -272,3 +272,13 @@ animation: slideFadeIn 0.5s ease;
   padding-bottom: 5rem;
   padding-top: 10rem;
 }
+
+.dropdown-item.dropdown-item-yellow .dropdown-button {
+  background-color: #FFFDE7; /* A pale, warm yellow */
+  color: #4E342E; /* A dark brown for good contrast on yellow */
+  /* You might want to ensure border color also fits, e.g., border-color: #FFCA28; */
+}
+
+.dropdown-item.dropdown-item-yellow .dropdown-button:hover {
+  background-color: #FFF9C4; /* A slightly brighter yellow for hover */
+}
