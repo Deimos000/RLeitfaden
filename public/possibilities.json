@@ -593,5 +593,75 @@
     "is_active": false,
     "is_visible": true,
     "comment": null
+  },
+  {
+    "id": 87,
+    "question": "Betreute Einstiegsphase",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 88,
+    "question": "Tag 1 Angebot",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 89,
+    "question": "Am Anfang wird (Name des Kindes) in die betreute Einstiegsphase integriert",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 90,
+    "question": "Der Trainer führt (Name des Kindes) in die Gruppe ein und findet einen festen Trainingspartner",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 91,
+    "question": "zudem gibt es ein Startpaket mit einem Randori Pro Stoffbeutel, eine Trinkflasche, ein T-Shirt, entweder Kampfsportanzug oder Boxhandschuhe",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 92,
+    "question": "Gegenfrage: Wie klingt das für Dich?",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 93,
+    "question": "Frage stellen, ob sie im Telefonat schon über unser Tag 1 Angebot informiert wurden",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 94,
+    "question": "Druck rausnehmen mit Floskel wie: „Es soll ganz entspannt für Euch sein!“",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 95,
+    "question": "Motivationsfloskel: „Wenn du bereit bist, sofort voll durchzustarten, haben wir heute unser exklusives Tag 1 Angebot nur für Dich!“",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
+  },
+  {
+    "id": 96,
+    "question": "„Normalerweise kostet die betreute Einstiegsphase 200€, wenn du dich jetzt entscheidest bei uns einzusteigen, sparst du 100€. Du kannst sie heute für nur 99€ buchen.“",
+    "is_active": false,
+    "is_visible": true,
+    "comment": null
   }
 ]
