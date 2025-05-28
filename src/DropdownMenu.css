@@ -281,7 +281,7 @@ animation: slideFadeIn 0.5s ease;
   position: relative;
 pointer-events: none;
   left: 50%; /* Centers the image horizontally */
-  transform: translateX(-20%); /* Adjusts the image to exactly be in the center */
+  transform: translateX(-30%); /* Adjusts the image to exactly be in the center */
   padding-bottom: 5rem;
   padding-top: 10rem;
   opacity:1 ;
