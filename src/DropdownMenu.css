@@ -276,7 +276,7 @@ animation: slideFadeIn 0.5s ease;
 
 .bottompng {
   width: 30rem;
-  scale: 2;
+  scale: 1.8;
   height: auto;
   position: relative;
 pointer-events: none;
