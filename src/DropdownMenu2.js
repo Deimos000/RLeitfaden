@@ -395,7 +395,7 @@ export default function DropdownMenu() {
                   itemSpecificClass = "dropdown-item-yellow";
                 } else if (processedLabel.includes("---") || processedLabel.toLowerCase().includes("nein")) {
                   itemSpecificClass = "dropdown-item-red";
-                } else if (processedLabel.includes(":::") || processedLabel.includes("+++") || processedLabel.toLowerCase().startsWith("ja ")) {
+                } else if (processedLabel.includes(":::") || processedLabel.includes("+++") || processedLabel.toLowerCase().startsWith("Ja ")) {
                   itemSpecificClass = "dropdown-item-green";
                 }
 
