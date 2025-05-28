@@ -276,6 +276,7 @@ animation: slideFadeIn 0.5s ease;
 
 .bottompng {
   width: 30rem;
+  scale: 2;
   height: auto;
   position: relative;
   left: 50%; /* Centers the image horizontally */
